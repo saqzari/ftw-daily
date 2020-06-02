@@ -113,23 +113,60 @@ export class ListingPageComponent extends Component {
       confirmPaymentError: null,
     };
 
-    const routes = routeConfiguration();
-    // Customize checkout page state with current listing and selected bookingDates
-    const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
-    callSetInitialValues(setInitialValues, initialValues);
+    const options = {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        listingId: listing.id.uuid,
+        bookingData: {
+          ...bookingDates,
+        },
+      }),
+    };
+    window
+      .fetch('http://localhost:3500/api/transaction-line-items', options)
+      .then(res => {
+        if (res.status >= 400) {
+          const e = new Error('Request failed');
+          e.response = res;
+          throw e;
+        }
+        return res;
+      })
+      .then(res => res.json())
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => {
+        if (e.response) {
+          console.error('error response:');
+          console.error(e.response);
+        } else {
+          console.error('error:');
+          console.error(e);
+        }
+      });
 
-    // Clear previous Stripe errors from store if there is any
-    onInitializeCardPaymentData();
+    // const routes = routeConfiguration();
+    // // Customize checkout page state with current listing and selected bookingDates
+    // const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
+    // callSetInitialValues(setInitialValues, initialValues);
 
-    // Redirect to CheckoutPage
-    history.push(
-      createResourceLocatorString(
-        'CheckoutPage',
-        routes,
-        { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
-        {}
-      )
-    );
+    // // Clear previous Stripe errors from store if there is any
+    // onInitializeCardPaymentData();
+
+    // // Redirect to CheckoutPage
+    // history.push(
+    //   createResourceLocatorString(
+    //     'CheckoutPage',
+    //     routes,
+    //     { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
+    //     {}
+    //   )
+    // );
   }
 
   onContactUser() {
