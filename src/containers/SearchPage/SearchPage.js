@@ -121,7 +121,7 @@ export class SearchPageComponent extends Component {
       onActivateListing,
     } = this.props;
     // eslint-disable-next-line no-unused-vars
-    const { mapSearch, page, sort, ...searchInURL } = parse(location.search, {
+    const { mapSearch, page, ...searchInURL } = parse(location.search, {
       latlng: ['origin'],
       latlngBounds: ['bounds'],
     });
@@ -174,7 +174,6 @@ export class SearchPageComponent extends Component {
         <div className={css.container}>
           <MainPanel
             urlQueryParams={validQueryParams}
-            sort={sort}
             listings={listings}
             searchInProgress={searchInProgress}
             searchListingsError={searchListingsError}
