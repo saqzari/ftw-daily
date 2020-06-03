@@ -1,10 +1,4 @@
-const {
-  calculateQuantityFromDates,
-  calculateTotalFromLineItems,
-  consrtuctValidLineItems,
-} = require('./lineItemHelpers');
-const { types } = require('sharetribe-flex-sdk');
-const { Money } = types;
+const { calculateQuantityFromDates, calculateTotalFromLineItems } = require('./lineItemHelpers');
 
 const unitType = 'line-item/night';
 const PROVIDER_COMMISSION_PERCENTAGE = -10;

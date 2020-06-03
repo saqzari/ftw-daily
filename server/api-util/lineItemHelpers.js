@@ -60,6 +60,9 @@ exports.calculateTotalPriceFromPercentage = (unitPrice, percentage) => {
  * @returns {Money} lineTotal
  */
 exports.calculateTotalPriceFromSeats = (unitPrice, unitCount, seats) => {
+  if (seats < 0) {
+    throw new Error(`Value of seats can't be negative`);
+  }
   const numericPrice = convertMoneyToNumber(unitPrice);
   const numericTotalPrice = new Decimal(numericPrice)
     .times(unitCount)
@@ -168,7 +171,7 @@ exports.calculateTotalForCustomer = lineItems => {
  * @returns {Array} lineItems with lineTotal and reversal info
  *
  */
-exports.consrtuctValidLineItems = lineItems => {
+exports.constructValidLineItems = lineItems => {
   const lineItemsWithTotals = lineItems.map(lineItem => {
     const { code, quantity, percentage } = lineItem;
 

@@ -10,7 +10,7 @@ const {
   calculateTotalFromLineItems,
   calculateTotalForProvider,
   calculateTotalForCustomer,
-  consrtuctValidLineItems,
+  constructValidLineItems,
 } = require('./lineItemHelpers');
 
 describe('calculateTotalPriceFromQuantity()', () => {
@@ -44,6 +44,15 @@ describe('calculateTotalPriceFromSeats()', () => {
     const seats = 3;
     expect(calculateTotalPriceFromSeats(unitPrice, unitCount, seats)).toEqual(
       new Money(3000, 'EUR')
+    );
+  });
+
+  it('should throw error if value of seats is negative', () => {
+    const unitPrice = new Money(1000, 'EUR');
+    const unitCount = 1;
+    const seats = -3;
+    expect(() => calculateTotalPriceFromSeats(unitPrice, unitCount, seats)).toThrowError(
+      "Value of seats can't be negative"
     );
   });
 });
@@ -221,7 +230,7 @@ describe('calculateTotalForCustomer()', () => {
   });
 });
 
-describe('consrtuctValidLineItems()', () => {
+describe('constructValidLineItems()', () => {
   it('should add lineTotal and reversal attributes to the lineItem', () => {
     const lineItems = [
       {
@@ -231,9 +240,9 @@ describe('consrtuctValidLineItems()', () => {
         includeFor: ['customer', 'provider'],
       },
     ];
-    expect(consrtuctValidLineItems(lineItems)[0].lineTotal).toEqual(new Money(10000, 'USD'));
-    expect(consrtuctValidLineItems(lineItems)[0].reversal).toEqual(false);
-    expect(consrtuctValidLineItems(lineItems)[0].reversal).not.toBeUndefined();
+    expect(constructValidLineItems(lineItems)[0].lineTotal).toEqual(new Money(10000, 'USD'));
+    expect(constructValidLineItems(lineItems)[0].reversal).toEqual(false);
+    expect(constructValidLineItems(lineItems)[0].reversal).not.toBeUndefined();
   });
 
   it('should throw error if lineItem code is not valid', () => {
@@ -247,7 +256,7 @@ describe('consrtuctValidLineItems()', () => {
       },
     ];
 
-    expect(() => consrtuctValidLineItems(lineItems)).toThrowError(
+    expect(() => constructValidLineItems(lineItems)).toThrowError(
       `Invalid line item code: ${code}`
     );
   });
