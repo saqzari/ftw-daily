@@ -34,7 +34,9 @@ const cleanSearchFromConflictingParams = (searchParams, sortConfig, filterConfig
     searchParams,
     filterConfig
   );
-  return sortingFiltersActive ? { ...searchParams, sort: null } : searchParams;
+  return sortingFiltersActive
+    ? { ...searchParams, [sortConfig.queryParamName]: null }
+    : searchParams;
 };
 
 /**
@@ -207,7 +209,7 @@ class MainPanel extends Component {
       return sortConfig.active ? (
         <SortBy
           {...mobileClassesMaybe}
-          sort={urlQueryParams.sort}
+          sort={urlQueryParams[sortConfig.queryParamName]}
           isConflictingFilterActive={!!conflictingFilterActive}
           onSelect={this.handleSortBy}
           showAsPopup

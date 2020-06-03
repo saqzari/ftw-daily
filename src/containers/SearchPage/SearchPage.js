@@ -108,6 +108,7 @@ export class SearchPageComponent extends Component {
       intl,
       listings,
       filterConfig,
+      sortConfig,
       history,
       location,
       mapListings,
@@ -128,11 +129,13 @@ export class SearchPageComponent extends Component {
 
     // urlQueryParams doesn't contain page specific url params
     // like mapSearch, page or origin (origin depends on config.sortSearchByDistance)
-    const urlQueryParams = pickSearchParamsOnly(searchInURL, filterConfig);
+    const urlQueryParams = pickSearchParamsOnly(searchInURL, filterConfig, sortConfig);
 
     // Page transition might initially use values from previous search
     const urlQueryString = stringify(urlQueryParams);
-    const paramsQueryString = stringify(pickSearchParamsOnly(searchParams, filterConfig));
+    const paramsQueryString = stringify(
+      pickSearchParamsOnly(searchParams, filterConfig, sortConfig)
+    );
     const searchParamsAreInSync = urlQueryString === paramsQueryString;
 
     const validQueryParams = validURLParamsForExtendedData(searchInURL, filterConfig);
@@ -230,6 +233,7 @@ SearchPageComponent.defaultProps = {
   searchParams: {},
   tab: 'listings',
   filterConfig: config.custom.filters,
+  sortConfig: config.custom.sortConfig,
   activeListingId: null,
 };
 
@@ -246,6 +250,7 @@ SearchPageComponent.propTypes = {
   searchParams: object,
   tab: oneOf(['filters', 'listings', 'map']).isRequired,
   filterConfig: propTypes.filterConfig,
+  sortConfig: propTypes.sortConfig,
 
   // from withRouter
   history: shape({
