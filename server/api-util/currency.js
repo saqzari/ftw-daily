@@ -42,7 +42,9 @@ const subUnitDivisors = {
 // Get the minor unit divisor for the given currency
 exports.unitDivisor = currency => {
   if (!has(subUnitDivisors, currency)) {
-    throw new Error(`No minor unit divisor defined for currency: ${currency}`);
+    throw new Error(
+      `No minor unit divisor defined for currency: ${currency} in /server/api-util/currency.js`
+    );
   }
   return subUnitDivisors[currency];
 };
